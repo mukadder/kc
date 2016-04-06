@@ -1,7 +1,7 @@
 <config>
 	<param name="application.http.scheme">http</param>
 	<param name="application.host">104.131.45.112</param>
-	<param name="http.port">8080</param>
+	<param name="http.port">18080</param>
 	<param name="build.version">Kuali-Coeus-Version</param>
 	<param name="app.context.name">${app.code}-${environment}</param>
 
