@@ -30,13 +30,10 @@ ENV MYSQL_CONNECTOR_FILE="mysql-connector-java-5.1.34/mysql-connector-java-5.1.3
 ENV SPRING_INSTRUMENTATION_TOMCAT_LINK="http://central.maven.org/maven2/org/springframework/spring-instrument-tomcat/3.2.13.RELEASE/spring-instrument-tomcat-3.2.13.RELEASE.jar"
 
 RUN mkdir -p /SetupTomcat
-#ADD ./foo.sh  /SetupTomcat
+ADD ./foo.sh  /SetupTomcat
 ADD SetupTomcat /SetupTomcat
-RUN apt-get install -y software-properties-common && \
-        add-apt-repository -y ppa:webupd8team/java && \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-        apt-get update && \
-        apt-get install -y wget zip unzip oracle-java8-installer tar graphviz
+RUN  echo ". /foo.sh\n . /root/.bashrc">> /etc/bash.bashrc 
+
 
 
 # Install Tomcat.
@@ -46,8 +43,8 @@ RUN \
   TOMCAT_MAJOR="8" && \
   TOMCAT_VERSION="$(curl -s https://tomcat.apache.org/download-80.cgi | grep -A 7 '</select><input type="submit" value="Change">' | grep '<h3 id="' | sed 's/<h3 id="//' | sed 's/">.*//')" && \
   TOMCAT_LINK="https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz" && \
-  TOMCAT_FILE="apache-tomcat-${TOMCAT_VERSION}.tar.gz" && \
-
+  TOMCAT_FILE="apache-tomcat-${TOMCAT_VERSION}.tar.gz" 
+RUN 
   
 	cd /SetupTomcat  && \
 	wget ${TOMCAT_LINK} && \
