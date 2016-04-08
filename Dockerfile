@@ -30,7 +30,7 @@ ENV MYSQL_CONNECTOR_FILE="mysql-connector-java-5.1.34/mysql-connector-java-5.1.3
 ENV SPRING_INSTRUMENTATION_TOMCAT_LINK="http://central.maven.org/maven2/org/springframework/spring-instrument-tomcat/3.2.13.RELEASE/spring-instrument-tomcat-3.2.13.RELEASE.jar"
 
 RUN mkdir -p /SetupTomcat
-ADD ./foo.sh  /SetupTomcat
+#ADD ./foo.sh  /SetupTomcat
 ADD SetupTomcat /SetupTomcat
 RUN apt-get install -y software-properties-common && \
         add-apt-repository -y ppa:webupd8team/java && \
@@ -63,8 +63,8 @@ RUN \
 	sed -i 's/<Context>/<Context>\n\n    <!-- BEGIN - For Kuali Coeus -->/' ${TOMCAT_LOCATION}/conf/context.xml && \
 	mkdir -p ${KC_CONFIG_XML_LOC} && \
 	cp -f /SetupTomcat/kc-config.xml ${KC_CONFIG_XML_LOC}/kc-config.xml && \
-#	cp -f /SetupTomcat/kc-dev.war ${TOMCAT_LOCATION}/webapps/kc-dev.war && \
- RUN cd /SetupTomcat; echo ". /foo.sh\n . /root/.bashrc">> /etc/bash.bashrc && \
+	cp -f /SetupTomcat/kc-dev.war ${TOMCAT_LOCATION}/webapps/kc-dev.war && \
+ #RUN cd /SetupTomcat; echo ". /foo.sh\n . /root/.bashrc">> /etc/bash.bashrc && \
   KC_VERSION="$(curl -s https://raw.githubusercontent.com/kuali/kc/master/pom.xml | egrep -m 1 "<version>" | sed 's/<version>//' | sed 's/\..*//' | awk '{print $1}')" && \
 	KC_WAR_FILE_LINK="http://www.kuali.erafiki.com/${KC_VERSION}/mysql/kc-dev.war" && \
 	KC_PROJECT_RICE_XML="http://www.kuali.erafiki.com/${KC_VERSION}/xml_files/rice-xml-${KC_VERSION}.zip" && \
